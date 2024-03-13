@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Times, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+        #result {
+            font-size: 18px;
+            margin-top: 18px;
+        }
+        #wrapper{
+            max-width: 850px;
+            margin: 0px auto;
+        }
+        #nhap{
+            display: flex;
+            font-size: 18px;
+        }
+        p{
+            display: flex;
+            font-size: 18px;
+        }
+        h1{
+            display: flex;
+            background-color: navy;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        button{
+            font-size: 18px;
+            background-color: #89dede;
+            margin-left: 30px;
+        }
+        button:hover{
+            background: #FF6347;
+        }
+    </style>
+    <title>Phần I: Bài toán đếm</title>
+</head>
+<body>
+    <div id="wrapper">
+    <h1>Phần I: Số cách chọn 3 đám hoa từ 7 loại hoa khác nhau là</h1>
+    <p><i>Đề bài: Bạn muốn chọn 3 đám hoa từ 7 loại hoa khác nhau. Có bao nhiêu cách để chọn?
+    </i>
+    </p>
+    <div id="nhap">
+    <label for="totalElements">Tổng số phần tử (n): </label>
+    <input type="number" id="totalElements" min="0" value="7">
+
+    <label for="selectedElements">Số phần tử được chọn (k): </label>
+    <input type="number" id="selectedElements" min="0" value="3">
+
+    <button onclick="tinhSoCachChon()">Tìm kết quả</button>
+</div>
+    <div id="result"></div>
+
+    <script>
+        function tinhGiaiThua(n) {
+            if (n === 0 || n === 1) {
+                return 1;
+            }
+            return n * tinhGiaiThua(n - 1);
+        }
+
+        function tinhToHop(n, k) {
+            return tinhGiaiThua(n) / (tinhGiaiThua(k) * tinhGiaiThua(n - k));
+        }
+
+        function tinhSoCachChon() {
+            var tongSoLoaiHoa = parseInt(document.getElementById("totalElements").value);
+            var soLoaiHoaDuocChon = parseInt(document.getElementById("selectedElements").value);
+
+            var resultElement = document.getElementById("result");
+
+            if (isNaN(tongSoLoaiHoa) || isNaN(soLoaiHoaDuocChon) || tongSoLoaiHoa < 0 || soLoaiHoaDuocChon < 0) {
+                resultElement.innerHTML = "Vui lòng nhập số nguyên không âm.";
+            } else {
+                var soCachChon = tinhToHop(tongSoLoaiHoa, soLoaiHoaDuocChon);
+                resultElement.innerHTML = "Số cách chọn " + soLoaiHoaDuocChon + " đám hoa từ " + tongSoLoaiHoa + " loại hoa là: " + soCachChon;
+            }
+        }
+    </script>
+    </div>
+</body>
+</html>

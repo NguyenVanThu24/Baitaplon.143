@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phần VII: Tìm đường đi ngắn nhất</title>
+<style>
+    body {
+        font-family: Times, sans-serif;
+    }
+    button {
+        padding: 10px 20px;
+        font-size: 18px;
+        cursor: pointer;
+        margin-left: 0px;
+        background-color: #89dede;
+        font-family: Times, sans-serif;
+    }
+button:hover{
+    background-color: #FF6347;
+}
+h2{
+    font-size: 40px;
+margin-bottom: 20px;
+margin-right: 45px;
+background-color: navy;
+color: white;
+display:flex;
+}
+    #result {
+        margin-top: 20px;
+    }
+    .result-item {
+        margin-bottom: 10px;
+        border: 1px solid #ddd;
+        padding: 10px;
+    }
+</style>
+</head>
+<body>
+<h2>Phần VII: Tìm đường đi ngắn nhất sử dụng thuật toán Floyd-Warshall</h2>
+
+<button onclick="findShortestPaths()">Tìm đường đi ngắn nhất</button>
+
+<div id="result"></div>
+
+<script>
+function findShortestPaths() {
+    const n = 4; // Số lượng đỉnh
+    const distances = [
+        [0, 5, 9, Infinity],
+        [Infinity, 0, 2, 8],
+        [Infinity, Infinity, 0, 7],
+        [4, Infinity, Infinity, 0]
+    ]; // Ma trận khoảng cách
+
+    function floydWarshall() {
+        const next = []; // Lưu lộ trình
+        const dist = distances.slice(); // Khởi tạo ma trận khoảng cách
+
+        // Khởi tạo ma trận lộ trình
+        for (let i = 0; i < n; i++) {
+            next[i] = [];
+            for (let j = 0; j < n; j++) {
+                if (i !== j && dist[i][j] !== Infinity) {
+                    next[i][j] = j;
+                } else {
+                    next[i][j] = null;
+                }
+            }
+        }
+
+        // Áp dụng thuật toán Floyd-Warshall
+        for (let k = 0; k < n; k++) {
+            for (let i = 0; i < n; i++) {
+                for (let j = 0; j < n; j++) {
+                    if (dist[i][k] + dist[k][j] < dist[i][j]) {
+                        dist[i][j] = dist[i][k] + dist[k][j];
+                        next[i][j] = next[i][k];
+                    }
+                }
+            }
+        }
+
+        return { distances: dist, next: next };
+    }
+
+    const result = floydWarshall();
+
+    // Hiển thị đường đi ngắn nhất
+    const resultContainer = document.getElementById('result');
+    resultContainer.innerHTML = '';
+    for (let i = 0; i < n; i++) {
+        for (let j = 0; j < n; j++) {
+            if (i !== j) {
+                const shortestPath = getShortestPath(i, j, result.next);
+                const shortestDistance = result.distances[i][j];
+                const resultItem = document.createElement('div');
+                resultItem.classList.add('result-item');
+                resultItem.innerHTML = `<p><b>Đường đi ngắn nhất từ ${i} đến ${j}:</b> ${shortestPath}</p>`;
+                resultItem.innerHTML += `<p><b>Khoảng cách ngắn nhất:</b> ${shortestDistance}</p>`;
+                resultContainer.appendChild(resultItem);
+            }
+        }
+    }
+}
+
+function getShortestPath(start, end, next) {
+    let path = `${start}`;
+    let current = start;
+    while (current !== end) {
+        current = next[current][end];
+        path += ` => ${current}`;
+    }
+    return path;
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Times, sans-serif;
+            text-align: center;
+            margin: 0px auto;
+        }
+
+        #results {
+            font-size: 18px;
+            margin-top: 18px;
+            
+        }
+        #wrapper{
+            max-width: 750px;
+            margin: 0px auto;
+        }
+        p{
+            display: flex;
+            font-size: 18px;
+            margin: 0px auto;
+            padding: 5px 25px 25px 0px;
+        }
+        h1{
+            background-color: navy;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        button{
+            font-size: 18px;
+            background-color: #89dede;
+        }
+        button:hover{
+            background: #FF6347;
+        }
+    </style>
+    <title>Phần III: Bài toán liệt kê</title>
+</head>
+<body>
+    <div id="wrapper">
+    <h1>
+        Phần III: Liệt kê cách chia 5 viên bi vào 3 hộp là
+        </h1>
+        <p> 
+            <i>Đề bài: Liệt kê tất cả các cách chia 5 viên bi vào 3 hộp, mỗi hộp có thể chứa từ 0 đến 5 viên bi?
+            </i>
+            </p>
+
+    <button onclick="lietKeCachChia()">Tìm kết quả</button>
+
+    <div id="results"></div>
+
+    <script>
+        function lietKeCachChia() {
+            var resultsElement = document.getElementById("results");
+            resultsElement.innerHTML = ""; // Xóa kết quả trước đó (nếu có)
+
+            for (var hop1 = 0; hop1 <= 5; hop1++) {
+                for (var hop2 = 0; hop2 <= 5; hop2++) {
+                    for (var hop3 = 0; hop3 <= 5; hop3++) {
+                        if (hop1 + hop2 + hop3 === 5) {
+                            resultsElement.innerHTML += "Hộp 1: " + hop1 + " viên, Hộp 2: " + hop2 + " viên, Hộp 3: " + hop3 + " viên<br>";
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    </div>
+</body>
+</html>

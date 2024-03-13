@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Times, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+        button{
+            font-size: 18px;
+            background-color: #89dede
+        }
+        button:hover{
+            background: #FF6347;
+        }
+        #wrapper{
+            max-width: 800px;
+            margin: 0px auto;  
+        }
+        #result {
+            font-size: 18px;
+            margin-top: 30px;
+            margin-left: 0px;
+        }
+        #ketqua{
+            font-size: 18px;
+        }
+        #ma-tran-ke{
+            font-size: 18px;
+        }
+        h1 {
+            background-color: navy;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+        p {
+            display: flex;
+            font-size: 18px;
+        }
+    </style>
+    <title>Phần II: Bài toán tồn tại</title>
+    <script>
+        var n, C, x = [],d
+        function show_kq() {
+            var kq = document.getElementById('ketqua')
+            kq.innerHTML += 'Nghiệm '+(++d)+': Cách tô màu: ' + x + '<br>'
+        }
+
+        function check_hx_khac_mau_nhau(i) {
+            //đã tô màu cho các nước từ x[0]..x[i]:
+            //cần check cặp ij mà Cij=1 xem màu khác nhau ko?
+            for (var j= 0; j < i; j++)
+                if (C[i][j] == 1 && x[i] == x[j])
+                    return false //ko được
+            return true //được
+        }
+
+        var Color=['ko biết','Xanh','Đỏ','Tím','Vàng']
+        //tô 1 màu cho x[i]
+        function to_mau(i) {
+            for (var mau = 1; mau <= 4; mau++) {
+                x[i] = Color[mau]
+                if (check_hx_khac_mau_nhau(i)) { //nhánh cận
+                    if (i == n - 1) {
+                        //đã đến thằng cuối cùng
+                        show_kq() //suy biến: ko đệ quy
+                    } else {
+                        to_mau(i + 1) //đệ quy
+                    }
+                }
+                x[i] = 0 // quay lui
+            }
+        } 
+        function giai_toan() {
+            //chuyển dữ liệu từ ma-tran-ke vào mảng 2 chiều C
+            var s = document.getElementById('ma-tran-ke').innerText
+            C = s.split('\n'); // C là ma trận kề ==mảng 2 chiều 
+            n = C.length; //số quốc gia
+            for (var i = 0; i < n; i++) {
+                x[i] = 0 // khởi tạo chưa tô mầu cho qgia nào
+            }
+            d = 0
+            to_mau(0) //tô 1 màu cho quốc gia đầu tiên
+        }
+    </script>
+</head>
+<body>
+    <div id="wrapper">
+    <h1>
+        Phần II: Bài toán tô màu bản đồ
+        </h1> 
+    <p><i>
+    Đề bài: Cho bản đồ gồn N quốc gia (mô tả bằng ma trận kề: 2 nước I và j là hàng xóm với nhà nhau thì Cij=1, ngược lại Cij=0). 
+    Hãy tô bằng 4 màu bản đồ sau cho 2 nước là hàng xóm với nhau thì khác màu nhau?    
+</i>
+</p>
+    <pre id="ma-tran-ke" contenteditable="true">
+11111
+11101
+11111
+10111
+11111
+</pre>
+    <button onclick="giai_toan()">Tìm cách tô màu</button>
+    <div id="ketqua"></div>
+</div>
+</body>
+</html>
